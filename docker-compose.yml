@@ -19,10 +19,10 @@ services:
     ports:
       - 8080:8080
 
-  # ruby_dev:
-  #   build: ./app/
-  #   container_name: ruby_container
-  #   ports:
-  #     - "3001:3000"
-  #   volumes:
-  #     - ./app:/home/app
+  ruby_dev:
+    build: ./app/
+    container_name: ruby_container
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/home/app
