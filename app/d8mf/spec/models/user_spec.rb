@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
     # Association test
-  # ensure Todo model has a 1:m relationship with the Item model
   it { should have_many(:friendships).dependent(:destroy) }
   it { should have_many(:friends).dependent(:destroy) }
 
