@@ -7,14 +7,15 @@ RSpec.describe 'User API', type: :request do
   let(:user) { users.first.id }
 
   # Test suite for GET /users
-  describe 'GET /users' do
+  describe 'GET /user' do
     # make HTTP get request before each example
-    before { get '/users' }
+    before { get '/user' }
 
-    it 'returns todos' do
+    it 'returns user' do
       # Note `json` is a custom helper to parse JSON responses
       expect(json).not_to be_empty
       expect(json.size).to eq(10)
+      puts json
     end
 
     it 'returns status code 200' do
@@ -22,14 +23,14 @@ RSpec.describe 'User API', type: :request do
     end
   end
 
-#   # Test suite for GET /todos/:id
-#   describe 'GET /todos/:id' do
-#     before { get "/todos/#{todo_id}" }
+  # Test suite for GET /user/:id
+#   describe 'GET /user/:id' do
+#     before { get "/user/#{user_id}" }
 
 #     context 'when the record exists' do
-#       it 'returns the todo' do
+#       it 'returns the user' do
 #         expect(json).not_to be_empty
-#         expect(json['id']).to eq(todo_id)
+#         expect(json['id']).to eq(user_id)
 #       end
 
 #       it 'returns status code 200' do
@@ -37,17 +38,17 @@ RSpec.describe 'User API', type: :request do
 #       end
 #     end
 
-#     context 'when the record does not exist' do
-#       let(:todo_id) { 100 }
+    # context 'when the record does not exist' do
+    #   let(:user_id) { 100 }
 
-#       it 'returns status code 404' do
-#         expect(response).to have_http_status(404)
-#       end
+    #   it 'returns status code 404' do
+    #     expect(response).to have_http_status(404)
+    #   end
 
-#       it 'returns a not found message' do
-#         expect(response.body).to match(/Couldn't find Todo/)
-#       end
-#     end
+    #   it 'returns a not found message' do
+    #     expect(response.body).to match(/Couldn't find Todo/)
+    #   end
+    # end
 #   end
 
 #   # Test suite for POST /todos
