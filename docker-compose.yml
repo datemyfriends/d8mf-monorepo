@@ -7,8 +7,6 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: password
-    volumes:
-    - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
     - 5432:5432
 
@@ -17,12 +15,52 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8081:8080
 
-  ruby_dev:
-    build: ./app/
-    container_name: ruby_container
+  user:
+    build: ./api/user
+    container_name: user
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
-      - ./app:/home/app
+      - ./api/user:/home/app
+
+
+  site:
+    tty: true # Enables debugging capabilities when attached to this container.
+    image: 'bitnami/express'
+    command: npm start
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+
+      - SKIP_DB_WAIT=0
+      - SKIP_DB_MIGRATION=0
+      - SKIP_NPM_INSTALL=0
+      - SKIP_BOWER_INSTALL=0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./test/site:/app
+
+
+  redis:
+      image: redis
+      hostname: redis
+      container_name: redisdocker
+      ports:
+          - "6379:6379"
+
+  express_gateway:
+      build: gateway/
+      container_name: egdocker
+      ports:
+          - "8080:8080"
+          - "8443:8443"
+          - "9876:9876"
+      volumes:
+          # - ./gateway/system.config.yml:/usr/src/app/config/system.config.yml
+          # - ./gateway/gateway.config.yml:/usr/src/app/config/gateway.config.yml
+          # - ./gateway/private.pem:/usr/src/app/private.pem
+          # - ./gateway/public.pem:/usr/src/app/public.pem
+          - ./gateway/dmf:/usr/src/app
